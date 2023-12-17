@@ -1,0 +1,44 @@
+<launch>
+
+  <!-- ... (other parameters) ... -->
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+    <!-- ... (other parameters) ... -->
+
+    <param name="planner_frequency" value="1.0"/>
+    <param name="planner_patience" value="5.0"/>
+    <param name="controller_frequency" value="10.0"/>
+
+    <!-- Goal Tolerance Parameters -->
+    <param name="yaw_goal_tolerance" value="0.5"/> <!-- Adjust as needed -->
+    <param name="xy_goal_tolerance" value="0.5"/>  <!-- Adjust as needed -->
+
+    <!-- Obstacle Avoidance Parameters -->
+    <param name="TrajectoryPlannerROS/min_vel_x" value="0.1"/>  <!-- Adjust as needed -->
+    <param name="TrajectoryPlannerROS/max_vel_x" value="0.5"/>  <!-- Adjust as needed -->
+    <param name="TrajectoryPlannerROS/min_vel_theta" value="-1.5"/>  <!-- Adjust as needed -->
+    <param name="TrajectoryPlannerROS/max_vel_theta" value="1.5"/>  <!-- Adjust as needed -->
+    <param name="TrajectoryPlannerROS/min_in_place_vel_theta" value="0.2"/>
+    <!-- ... (other TrajectoryPlannerROS parameters) ... -->
+
+    <!-- Recovery Behavior Parameters -->
+    <param name="max_recovery_attempts" value="5"/> <!-- Adjust as needed -->
+    <param name="oscillation_timeout" value="10.0"/> <!-- Time in seconds before a recovery behavior is considered failed -->
+    <param name="oscillation_distance" value="0.2"/> <!-- Distance in meters considered as oscillation -->
+    <param name="clearing_rotation_allowed" value="true"/> <!-- Allowing the robot to rotate in place during recovery -->
+
+    <!-- Additional Recovery Behaviors -->
+    <param name="base_local_planner_recovery_behaviors" value="[{'name':'backup_turn', 'type':'clear_costmap_recovery/ClearCostmapRecovery', 'reset_distance':0.4},{'name':'backup_turn', 'type':'clear_costmap_recovery/ClearCostmapRecovery', 'reset_distance':-0.4, 'post_rotate_angle':1.5708},{'name':'check_and_proceed', 'type':'custom_recovery_behaviors/CheckAndProceed', 'check_distance':0.4, 'check_distance_behind':0.3, 'proceed_distance':0.5}]"/>
+
+    <!-- Interrupt Node -->
+    <node pkg="ros_autonomous_slam" type="interrupt_node.py" name="interrupt_node" output="screen"/>
+
+    <!-- ... (other parameters) ... -->
+
+  </node>
+
+  <!-- ... (other launch elements) ... -->
+
+</launch>
+
